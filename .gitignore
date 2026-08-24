@@ -11,7 +11,7 @@ __pycache__/
 *.pyc
 
 .env
-
+telegram_sessions/
 *.session
 *.session-journal
 
