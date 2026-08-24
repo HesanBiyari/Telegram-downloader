@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ورود به Telegram</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'downloader/css/auth.css' %}"
+    >
+
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+
+        <div class="logo">
+            <span class="logo-arrow">↓</span>
+        </div>
+
+        <h1 class="title">
+            ورود به Telegram
+        </h1>
+
+        <p class="subtitle">
+            برای استفاده از دانلودر، حساب Telegram خود را متصل کنید.
+        </p>
+
+
+        {% if error %}
+
+            <div class="error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+
+                <label
+                    class="form-label"
+                    for="phone"
+                >
+                    شماره تلفن
+                </label>
+
+                <input
+                    class="form-input"
+                    id="phone"
+                    type="text"
+                    name="phone"
+                    placeholder="+989123456789"
+                    autocomplete="tel"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                class="submit-button"
+                type="submit"
+            >
+                ادامه
+            </button>
+
+        </form>
+
+
+        <div class="info-box">
+
+            شماره را با فرمت بین‌المللی وارد کنید.
+            <br>
+            مثال: +989123456789
+
+        </div>
+
+
+        <div class="security">
+
+            🔒 ارتباط با Telegram از طریق API رسمی انجام می‌شود.
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

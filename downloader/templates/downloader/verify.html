@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>تأیید ورود</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'downloader/css/auth.css' %}"
+    >
+
+</head>
+
+<body>
+
+<div class="auth-wrapper">
+
+    <div class="auth-card">
+
+        <div class="logo">
+            <span class="logo-arrow">✓</span>
+        </div>
+
+        <h1 class="title">
+            تأیید ورود
+        </h1>
+
+        <p class="subtitle">
+            کدی که Telegram برای شما ارسال کرده
+            <br>
+            وارد کنید.
+        </p>
+
+
+        {% if error %}
+
+            <div class="error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+
+                <label
+                    class="form-label"
+                    for="code"
+                >
+                    کد ورود
+                </label>
+
+                <input
+                    class="form-input code-input"
+                    id="code"
+                    type="text"
+                    name="code"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    maxlength="6"
+                    placeholder="••••••"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                class="submit-button"
+                type="submit"
+            >
+                تأیید و ورود
+            </button>
+
+        </form>
+
+
+        <div class="info-box">
+
+            کد ارسال‌شده توسط Telegram را وارد کنید.
+
+        </div>
+
+
+        <a
+            class="back-link"
+            href="{% url 'login' %}"
+        >
+            ← تغییر شماره
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

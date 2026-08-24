@@ -1,0 +1,644 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Telegram Downloader</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'downloader/css/style.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="background">
+
+    <main class="container">
+
+        <!-- =========================
+             LOGO
+        ========================== -->
+
+        <div class="logo">
+            ↓
+        </div>
+
+
+        <!-- =========================
+             TITLE
+        ========================== -->
+
+        <h1>
+            Telegram Downloader
+        </h1>
+
+        <p class="subtitle">
+            لینک پیام Telegram را وارد کنید
+            و فایل آن را دانلود کنید.
+        </p>
+
+
+        <!-- =========================
+             LOGIN STATUS
+        ========================== -->
+
+        {% if logged_in %}
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    حساب Telegram متصل است
+                </span>
+
+            </div>
+
+        {% else %}
+
+            <div class="login-box">
+
+                <h2>
+                    ابتدا وارد Telegram شوید
+                </h2>
+
+                <p>
+                    برای دانلود فایل باید حساب
+                    Telegram خود را متصل کنید.
+                </p>
+
+                <a
+                    href="{% url 'login' %}"
+                    class="button"
+                >
+                    ورود به Telegram
+                </a>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =========================
+             ERROR
+        ========================== -->
+
+        {% if error %}
+
+            <div class="alert error">
+
+                {{ error }}
+
+            </div>
+
+        {% endif %}
+
+
+        {% if logged_in %}
+
+
+            <!-- =========================
+                 LINK FORM
+            ========================== -->
+
+            <form
+                method="POST"
+                class="download-form"
+            >
+
+                {% csrf_token %}
+
+                <label for="telegram_url">
+                    لینک پیام Telegram
+                </label>
+
+
+                <input
+                    type="url"
+                    id="telegram_url"
+                    name="telegram_url"
+                    placeholder="https://t.me/channel/123"
+                    autocomplete="off"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    class="button"
+                >
+                    بررسی لینک
+                </button>
+
+            </form>
+
+
+            <!-- =========================
+                 EXAMPLE
+            ========================== -->
+
+            <div class="example">
+
+                نمونه لینک:
+
+                <br>
+
+                <code>
+                    https://t.me/channel/123
+                </code>
+
+            </div>
+
+
+            <!-- =========================
+                 FILE CARD
+            ========================== -->
+
+            {% if file_info %}
+
+                <div class="file-card">
+
+                    <div class="file-icon">
+                        📁
+                    </div>
+
+
+                    <div class="file-details">
+
+                        <h3
+                            title="{{ file_info.name }}"
+                        >
+                            {{ file_info.name }}
+                        </h3>
+
+
+                        <p>
+                            حجم:
+                            {{ file_info.size }}
+                        </p>
+
+
+                        <p>
+                            نوع:
+                            {{ file_info.type }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     DOWNLOAD BUTTON
+                ========================== -->
+
+                <button
+                    type="button"
+                    id="downloadButton"
+                    class="button"
+                >
+                    دانلود فایل
+                </button>
+
+
+                <!-- =========================
+                     PROGRESS
+                ========================== -->
+
+                <div
+                    id="downloadProgress"
+                    class="progress-container"
+                    style="display: none;"
+                >
+
+                    <div class="progress-info">
+
+                        <span id="progressText">
+                            در حال آماده‌سازی...
+                        </span>
+
+                        <span id="progressPercent">
+                            0%
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <div
+                            id="progressFill"
+                            class="progress-fill"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+        {% endif %}
+
+
+        <!-- =========================
+             FOOTER
+        ========================== -->
+
+        <div class="footer">
+
+            Telegram Downloader
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ==================================================
+     DOWNLOAD JAVASCRIPT
+================================================== -->
+
+{% if logged_in %}
+
+<script>
+
+const downloadButton =
+    document.getElementById(
+        "downloadButton"
+    );
+
+const progressContainer =
+    document.getElementById(
+        "downloadProgress"
+    );
+
+const progressFill =
+    document.getElementById(
+        "progressFill"
+    );
+
+const progressPercent =
+    document.getElementById(
+        "progressPercent"
+    );
+
+const progressText =
+    document.getElementById(
+        "progressText"
+    );
+
+
+/*
+|--------------------------------------------------------------------------
+| DOWNLOAD BUTTON
+|--------------------------------------------------------------------------
+*/
+
+if (downloadButton) {
+
+    downloadButton.addEventListener(
+        "click",
+        async function () {
+
+            downloadButton.disabled =
+                true;
+
+            downloadButton.textContent =
+                "در حال شروع...";
+
+
+            if (progressContainer) {
+
+                progressContainer.style.display =
+                    "block";
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "{% url 'start_download' %}",
+                        {
+                            method: "GET"
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    data.error
+                ) {
+
+                    throw new Error(
+                        data.error ||
+                        "شروع دانلود ناموفق بود."
+                    );
+
+                }
+
+
+                checkProgress(
+                    data.download_id
+                );
+
+
+            } catch (error) {
+
+                showDownloadError(
+                    error.message
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| CHECK REAL PROGRESS
+|--------------------------------------------------------------------------
+*/
+
+async function checkProgress(
+    downloadId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/download/progress/${downloadId}/`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            data.error
+        ) {
+
+            throw new Error(
+                data.error ||
+                "دریافت وضعیت دانلود ناموفق بود."
+            );
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | STARTING
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            data.status ===
+            "starting"
+        ) {
+
+            progressText.textContent =
+                "در حال آماده‌سازی...";
+
+            progressPercent.textContent =
+                "0%";
+
+
+            setTimeout(
+                function () {
+
+                    checkProgress(
+                        downloadId
+                    );
+
+                },
+                500
+            );
+
+
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | DOWNLOADING
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            data.status ===
+            "downloading"
+        ) {
+
+            const percent =
+                data.progress || 0;
+
+
+            progressFill.style.width =
+                `${percent}%`;
+
+
+            progressPercent.textContent =
+                `${percent}%`;
+
+
+            if (
+                data.total > 0
+            ) {
+
+                const downloadedMB =
+                    (
+                        data.downloaded /
+                        (
+                            1024 * 1024
+                        )
+                    ).toFixed(1);
+
+
+                const totalMB =
+                    (
+                        data.total /
+                        (
+                            1024 * 1024
+                        )
+                    ).toFixed(1);
+
+
+                progressText.textContent =
+                    `${downloadedMB} MB از ${totalMB} MB`;
+
+            } else {
+
+                progressText.textContent =
+                    "در حال دانلود...";
+
+            }
+
+
+            setTimeout(
+                function () {
+
+                    checkProgress(
+                        downloadId
+                    );
+
+                },
+                500
+            );
+
+
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | COMPLETED
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            data.status ===
+            "completed"
+        ) {
+
+            progressFill.style.width =
+                "100%";
+
+
+            progressPercent.textContent =
+                "100%";
+
+
+            progressText.textContent =
+                "✓ دانلود کامل شد";
+
+
+            downloadButton.textContent =
+                "✓ دانلود شد";
+
+
+            /*
+            |--------------------------------------------------------------
+            | Browser file download
+            |--------------------------------------------------------------
+            */
+
+            window.location.href =
+                `/download/file/${downloadId}/`;
+
+
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | ERROR
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            data.status ===
+            "error"
+        ) {
+
+            throw new Error(
+                data.error ||
+                "خطا در دانلود فایل."
+            );
+
+        }
+
+    } catch (error) {
+
+        showDownloadError(
+            error.message
+        );
+
+    }
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| ERROR
+|--------------------------------------------------------------------------
+*/
+
+function showDownloadError(
+    message
+) {
+
+    if (progressText) {
+
+        progressText.textContent =
+            message;
+
+    }
+
+
+    if (progressPercent) {
+
+        progressPercent.textContent =
+            "خطا";
+
+    }
+
+
+    if (progressFill) {
+
+        progressFill.style.width =
+            "0%";
+
+    }
+
+
+    if (downloadButton) {
+
+        downloadButton.disabled =
+            false;
+
+        downloadButton.textContent =
+            "تلاش مجدد";
+
+    }
+
+}
+
+</script>
+
+{% endif %}
+
+
+</body>
+
+</html>

@@ -1,0 +1,620 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+
+    font-family: Arial, Tahoma, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #172554 0%,
+            #0f172a 45%,
+            #020617 100%
+        );
+
+    color: #f8fafc;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   MAIN BACKGROUND
+========================= */
+
+.background {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px 20px;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container {
+    width: 100%;
+    max-width: 620px;
+
+    padding: 42px;
+
+    background: rgba(30, 41, 59, 0.92);
+
+    border: 1px solid rgba(148, 163, 184, 0.15);
+
+    border-radius: 26px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.45);
+
+    backdrop-filter: blur(15px);
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+    width: 72px;
+    height: 72px;
+
+    margin: 0 auto 22px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 22px;
+
+    background: #229ed9;
+
+    font-size: 40px;
+    font-weight: bold;
+
+    box-shadow:
+        0 12px 30px rgba(34, 158, 217, 0.25);
+}
+
+
+/* =========================
+   TITLES
+========================= */
+
+h1 {
+    text-align: center;
+
+    font-size: 30px;
+
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+
+    color: #94a3b8;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 13px 15px;
+
+    margin-bottom: 22px;
+
+    border-radius: 13px;
+
+    background: rgba(34, 197, 94, 0.08);
+
+    border: 1px solid rgba(34, 197, 94, 0.15);
+
+    color: #86efac;
+
+    font-size: 14px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.download-form {
+    width: 100%;
+}
+
+.download-form label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+}
+
+.download-form input {
+    width: 100%;
+
+    height: 52px;
+
+    padding: 0 16px;
+
+    border-radius: 13px;
+
+    border: 1px solid #475569;
+
+    background: #0f172a;
+
+    color: white;
+
+    font-size: 15px;
+
+    outline: none;
+
+    direction: ltr;
+
+    text-align: left;
+
+    transition: 0.2s;
+}
+
+.download-form input::placeholder {
+    color: #64748b;
+}
+
+.download-form input:focus {
+    border-color: #229ed9;
+
+    box-shadow:
+        0 0 0 4px rgba(34, 158, 217, 0.12);
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.button {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 52px;
+
+    margin-top: 15px;
+
+    padding: 13px 18px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background: #229ed9;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.button:hover {
+    background: #168ac0;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(34, 158, 217, 0.20);
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================
+   FILE CARD
+========================= */
+
+.file-card {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: #0f172a;
+
+    border: 1px solid #334155;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+.file-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 14px;
+
+    background: #229ed9;
+
+    font-size: 25px;
+
+    flex-shrink: 0;
+}
+
+.file-details {
+    min-width: 0;
+
+    flex: 1;
+}
+
+.file-details h3 {
+    margin-bottom: 8px;
+
+    font-size: 16px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.file-details p {
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    margin-top: 4px;
+}
+
+
+/* =========================
+   ALERT
+========================= */
+
+.alert {
+    padding: 14px 15px;
+
+    margin-bottom: 20px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+.error {
+    background: rgba(239, 68, 68, 0.10);
+
+    border: 1px solid rgba(239, 68, 68, 0.25);
+
+    color: #fca5a5;
+}
+
+
+/* =========================
+   LOGIN BOX
+========================= */
+
+.login-box {
+    text-align: center;
+
+    padding: 25px 0;
+}
+
+.login-box h2 {
+    font-size: 20px;
+
+    margin-bottom: 10px;
+}
+
+.login-box p {
+    color: #94a3b8;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================
+   EXAMPLE
+========================= */
+
+.example {
+    margin-top: 22px;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 2;
+
+    text-align: center;
+}
+
+.example code {
+    display: inline-block;
+
+    max-width: 100%;
+
+    margin-top: 5px;
+
+    padding: 4px 8px;
+
+    border-radius: 7px;
+
+    background: #0f172a;
+
+    color: #94a3b8;
+
+    direction: ltr;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    margin-top: 30px;
+
+    text-align: center;
+
+    color: #475569;
+
+    font-size: 12px;
+}
+
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 768px) {
+
+    .background {
+        padding: 20px 15px;
+    }
+
+    .container {
+        max-width: 600px;
+
+        padding: 35px 28px;
+
+        border-radius: 22px;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 600px) {
+
+    .background {
+        min-height: 100vh;
+
+        padding: 15px 12px;
+
+        align-items: flex-start;
+    }
+
+    .container {
+        width: 100%;
+
+        margin-top: 10px;
+
+        padding: 28px 20px;
+
+        border-radius: 20px;
+    }
+
+    .logo {
+        width: 62px;
+        height: 62px;
+
+        margin-bottom: 18px;
+
+        border-radius: 18px;
+
+        font-size: 34px;
+    }
+
+    h1 {
+        font-size: 24px;
+
+        line-height: 1.4;
+    }
+
+    .subtitle {
+        font-size: 13px;
+
+        margin-bottom: 24px;
+    }
+
+    .status {
+        font-size: 13px;
+    }
+
+    .download-form input {
+        height: 50px;
+
+        font-size: 14px;
+    }
+
+    .button {
+        min-height: 50px;
+
+        font-size: 15px;
+    }
+
+    .file-card {
+        padding: 16px;
+
+        gap: 12px;
+    }
+
+    .file-icon {
+        width: 48px;
+        height: 48px;
+
+        border-radius: 12px;
+
+        font-size: 21px;
+    }
+
+    .file-details h3 {
+        font-size: 14px;
+    }
+
+    .file-details p {
+        font-size: 12px;
+    }
+}
+
+
+/* ==================================================
+   SMALL PHONES
+================================================== */
+
+@media (max-width: 380px) {
+
+    .background {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 24px 16px;
+
+        border-radius: 18px;
+    }
+
+    .logo {
+        width: 56px;
+        height: 56px;
+
+        font-size: 30px;
+    }
+
+    h1 {
+        font-size: 21px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+    }
+
+    .file-card {
+        align-items: flex-start;
+    }
+
+    .file-icon {
+        width: 44px;
+        height: 44px;
+
+        font-size: 19px;
+    }
+}
+
+
+/* ==================================================
+   VERY SMALL PHONES
+================================================== */
+
+@media (max-width: 320px) {
+
+    .container {
+        padding: 22px 13px;
+    }
+
+    h1 {
+        font-size: 19px;
+    }
+
+    .button {
+        font-size: 14px;
+    }
+
+    .download-form input {
+        font-size: 13px;
+    }
+}
